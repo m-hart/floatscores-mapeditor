@@ -4,6 +4,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import './map.css';
 import {
+  Feature,
+} from 'geojson';
+import {
   memoize
 } from 'lodash';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -14,16 +17,21 @@ import {
   SimpleSelectMode,
 } from 'mapbox-gl-draw-circle';
 
+export interface DrawEvent {
+  type: 'draw.create';
+  features: Feature[];
+}
 
-export interface BaseMapProps {
+
+export interface MapProps {
   token: string;
-  onDraw: (event: mapboxgl.EventData) => any;
+  onDraw: (event: DrawEvent) => any;
 }
 
 /**
  * Base Map Class, handles loading and drawing a map from API token.
  */
-export default class BaseMap extends React.PureComponent<BaseMapProps> {
+export default class Map extends React.PureComponent<MapProps> {
   private map?: mapboxgl.Map;
   private drawingInstance: MapboxDraw;
 
@@ -33,12 +41,12 @@ export default class BaseMap extends React.PureComponent<BaseMapProps> {
     trash: true,
   }
 
-  constructor(props: BaseMapProps) {
+  constructor(props: MapProps) {
     super(props);
 
     this.drawingInstance = new MapboxDraw({
       displayControlsDefault: false,
-      controls: BaseMap.CONTROLS,
+      controls: Map.CONTROLS,
       userProperties: true,
       modes: {
         ...MapboxDraw.modes,
@@ -50,7 +58,6 @@ export default class BaseMap extends React.PureComponent<BaseMapProps> {
       },
 
     });
-    console.log(this.drawingInstance);
   }
 
   /**
@@ -79,16 +86,14 @@ export default class BaseMap extends React.PureComponent<BaseMapProps> {
     // Initialise map instance after `map` div is loaded.
     this.map = this.memoizedMapInstance(this.props.token);
     this.map.addControl(this.drawingInstance, 'top-left');
+
+    // Add drawing binds
+    this.map.on('draw.create', this.props.onDraw);
   }
-
-
-
 
   render() {
     return (
-      <div className="map-container">
-        <div id="map" className="map"/>
-      </div>
+      <div id="map" className="map"/>
     )
   }
 }

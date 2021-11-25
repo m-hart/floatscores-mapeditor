@@ -1,13 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import BaseMap from './components/Map/BaseMap';
+import Editor from './components/Map/Editor';
 
 function App() {
   const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-  const map = token ? (
-    <BaseMap
+  const editor = token ? (
+    <Editor
       token={token}
     />
   ) : <div>Set REACT_APP_MAPBOX_ACCESS_TOKEN in .env.local</div>
@@ -15,9 +15,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="contents">
-          {map}
-        </div>
+        {editor}
       </header>
     </div>
   );
