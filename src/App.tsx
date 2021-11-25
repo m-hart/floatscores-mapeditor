@@ -4,13 +4,19 @@ import './App.css';
 import BaseMap from './components/Map/BaseMap';
 
 function App() {
+  const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+
+  const map = token ? (
+    <BaseMap
+      token={token}
+    />
+  ) : <div>Set REACT_APP_MAPBOX_ACCESS_TOKEN in .env.local</div>
+
   return (
     <div className="App">
       <header className="App-header">
         <div className="contents">
-          <BaseMap
-            token={'token'}
-          />
+          {map}
         </div>
       </header>
     </div>
