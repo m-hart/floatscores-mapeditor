@@ -36,6 +36,13 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
     this.index = 0;
   }
 
+  private onSourceChange = (id: string, source: Source) => this.setState({
+    sources: {
+      ...this.state.sources,
+      [id]: source
+    }
+  })
+
   private onDraw = (event: DrawEvent) => {
     const entries = Object.fromEntries(event.features.map(f => {
       const id = `${f.id}`
@@ -63,11 +70,13 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
           <Map
             {...this.props}
             onDraw={this.onDraw}
+            sources={sources}
           />
         </div>
         <div className="editor-pane-container">
           <EditorPane
             sources={Object.entries(sources)}
+            onSourceChange={this.onSourceChange}
           />
         </div>
       </div>

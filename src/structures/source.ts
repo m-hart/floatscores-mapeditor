@@ -1,6 +1,7 @@
 import {
   Feature
 } from 'geojson';
+import { isPointSource, isPolygonSource } from './typeguards';
 
 export interface Source {
   type: string;
@@ -46,5 +47,34 @@ export interface PointSource extends Source {
       }
   }
   console.warn(`Unsupported geojson feature type: ${geojson.geometry.type}`)
+  return null;
+}
+
+/**
+ * Converts a simplified source back into a geojson layer
+ * @param source
+ * @returns
+ */
+export function sourceToFeature(source: Source): Feature | null {
+  if (isPolygonSource(source)) {
+    return {
+      type: 'Feature',
+      properties: {},
+      id: source.id,
+      geometry: { type: 'Polygon', coordinates: [source.polygon] }
+    }
+  }
+
+  if (isPointSource(source)) {
+    return {
+      type: 'Feature',
+      properties: {
+        radius: source.radius,
+      },
+      id: source.id,
+      geometry: { type: 'Point', coordinates: source.point }
+    }
+  }
+
   return null;
 }

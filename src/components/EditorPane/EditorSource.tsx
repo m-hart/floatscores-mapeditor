@@ -14,17 +14,21 @@ import PolygonPane from './source/PolygonPane';
 interface EditorSourceProps {
   id: string;
   source: Source;
+  onSourceChange: (id: string, source: Source) => void;
 }
 
 export class EditorSource extends React.PureComponent<EditorSourceProps> {
+  private getSourceContent() {
+    const {
+      source
+    } = this.props;
 
-  private static getSourceContent(source: Source) {
     if (isPointSource(source)) {
       // TODO
       return (
         <PointPane
           source={source}
-          onSourceChange={() => {}}
+          onSourceChange={this.props.onSourceChange}
         />
       );
     }
@@ -33,7 +37,7 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       return (
         <PolygonPane
           source={source}
-          onSourceChange={() => {}}
+          onSourceChange={this.props.onSourceChange}
         />
       );
     }
@@ -56,7 +60,7 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
         contentOuterClassName="source-element"
       >
         <hr />
-        {EditorSource.getSourceContent(source)}
+        {this.getSourceContent()}
         <hr />
       </Collapsible>
     )

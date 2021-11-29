@@ -8,19 +8,38 @@ interface PointPaneProps {
   onSourceChange: (id: string, newSource: PointSource) => void;
 }
 
+/**
+ * Class for handling all attached properties of a point source.
+ */
 export default class PointPane extends React.PureComponent<PointPaneProps> {
+
+  private onCoordinateChange = (point: [number, number]) => {
+    const {
+      source,
+      onSourceChange
+    } = this.props;
+
+    onSourceChange(
+      source.id,
+      {
+        ...source,
+        // Replace point
+        point,
+      }
+    );
+  }
 
   render() {
     const {
       source: {
         point,
-      }
+      },
     } = this.props;
 
     return (
       <div>
         <PointProperty
-          point={point} index={0} onEdit={() => {}}
+          point={point} onEdit={this.onCoordinateChange}
         />
       </div>
     )

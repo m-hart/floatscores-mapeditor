@@ -16,6 +16,7 @@ import {
   DirectMode,
   SimpleSelectMode,
 } from 'mapbox-gl-draw-circle';
+import { Source, sourceToFeature } from '../../structures/source';
 
 export interface DrawEvent {
   type: 'draw.create';
@@ -26,6 +27,7 @@ export interface DrawEvent {
 export interface MapProps {
   token: string;
   onDraw: (event: DrawEvent) => any;
+  sources: Record<string, Source>;
 }
 
 /**
@@ -91,7 +93,24 @@ export default class Map extends React.PureComponent<MapProps> {
     this.map.on('draw.create', this.props.onDraw);
   }
 
+  componentDidUpdate({ sources: prevSources }: MapProps) {
+    if (prevSources !== this.props.sources) {
+      this.drawingInstance.set({
+        type: 'FeatureCollection',
+        features: Object.values(this.props.sources).map(sourceToFeature).filter<Feature>((f: Feature | null): f is Feature => f !== null),
+      });
+    }
+  }
+
   render() {
+    const {
+      sources,
+    } = this.props;
+
+    if (Object.keys(sources).length > 0) {
+      console.log(this.map);
+      console.log(this.drawingInstance)
+    }
     return (
       <div id="map" className="map"/>
     )

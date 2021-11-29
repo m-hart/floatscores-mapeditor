@@ -8,7 +8,26 @@ interface PolygonPaneProps {
   onSourceChange: (id: string, newSource: PolygonSource) => void;
 }
 
+/**
+ * Class for handling all attached properties of a polygon source.
+ */
 export default class PolygonPane extends React.PureComponent<PolygonPaneProps> {
+
+  private onCoordinateChange = (index: number) => (point: [number, number]) => {
+    const {
+      source,
+      onSourceChange
+    } = this.props;
+
+    onSourceChange(
+      source.id,
+      {
+        ...source,
+        // Replace point in polygon
+        polygon: source.polygon.map((p, i) => index === i ? point : p)
+      }
+    );
+  }
 
   render() {
     const {
@@ -17,8 +36,8 @@ export default class PolygonPane extends React.PureComponent<PolygonPaneProps> {
       }
     } = this.props;
 
-    const points = polygon.map((p, i) => <PointProperty point={p} index={i} onEdit={() => {}}/>)
-    console.log(polygon.length, polygon);
+    // Curry the index
+    const points = polygon.map((p, i) => <PointProperty point={p} onEdit={this.onCoordinateChange(i)}/>)
 
     return (
       <div>
