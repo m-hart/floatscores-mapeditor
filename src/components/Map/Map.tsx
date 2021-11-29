@@ -27,6 +27,7 @@ export interface DrawEvent {
 export interface MapProps {
   token: string;
   onDraw: (event: DrawEvent) => any;
+  onDelete: (event: DrawEvent) => any;
   sources: Record<string, Source>;
 }
 
@@ -91,6 +92,7 @@ export default class Map extends React.PureComponent<MapProps> {
 
     // Add drawing binds
     this.map.on('draw.create', this.props.onDraw);
+    this.map.on('draw.delete', this.props.onDelete);
   }
 
   componentDidUpdate({ sources: prevSources }: MapProps) {
@@ -103,14 +105,6 @@ export default class Map extends React.PureComponent<MapProps> {
   }
 
   render() {
-    const {
-      sources,
-    } = this.props;
-
-    if (Object.keys(sources).length > 0) {
-      console.log(this.map);
-      console.log(this.drawingInstance)
-    }
     return (
       <div id="map" className="map"/>
     )

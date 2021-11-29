@@ -11,6 +11,10 @@ interface ToolbarState {
   validLoadData: boolean | undefined;
   value: string;
 }
+
+/**
+ * Toolbar class for loading and saving files.
+ */
 export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
 
   constructor(props: ToolbarProps) {
@@ -42,13 +46,14 @@ export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarSt
       const json = (JSON.parse(data as string));
 
       const valid = validateSourceMap(json);
-      console.log(valid);
+
       if (valid) {
         onSourceLoad(json);
       }
 
       this.setState({
         validLoadData: valid,
+        // Clears input form by causing a rerender - hack but it works
         value: '',
       });
     }
@@ -61,7 +66,12 @@ export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarSt
 
     return(
       <div>
-        <input type="file" name="Load" onChange={this.load} value={value}/>
+        <input
+          type="file"
+          name="Load"
+          onChange={this.load}
+          value={value}
+        />
         <button onClick={this.save}>
           <label>Save</label>
         </button>

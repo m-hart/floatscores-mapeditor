@@ -61,6 +61,13 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
     });
   }
 
+  private onDelete = (event: DrawEvent) => {
+    const ids = event.features.map(f => `${f.id}`);
+    this.setState({
+      sources: Object.fromEntries(Object.entries(this.state.sources).filter(([id, _src]) => !ids.includes(id))),
+    });
+  }
+
   render() {
     const sources = this.state.sources;
 
@@ -70,6 +77,7 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
           <Map
             {...this.props}
             onDraw={this.onDraw}
+            onDelete={this.onDelete}
             sources={sources}
           />
         </div>

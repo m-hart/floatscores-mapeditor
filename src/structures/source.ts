@@ -91,14 +91,12 @@ export function sourceToFeature(source: Source): Feature | null {
  */
 export function validateSourceMap(json: any): json is Record<string, Source> {
   try {
-    const invalid = Object.entries(json).find(([id, source]) => {
-      console.log(id, source, isPolygonSource(source), isPointSource(source));
-
-      return id !== (source as Source).id || (
-      !isPolygonSource(source)
-      && !isPointSource(source)
+    const invalid = Object.entries(json).find(([id, source]) => (
+      id !== (source as Source).id || (
+        !isPolygonSource(source)
+        && !isPointSource(source)
       )
-    });
+    ));
 
     // Return false if we found an invalid object
     return !invalid;
