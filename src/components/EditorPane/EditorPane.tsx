@@ -1,5 +1,7 @@
 import React from 'react';
-import { Source } from '../../structures/sources';
+import {
+  Source
+} from '../../structures/source';
 import { EditorSource } from './EditorSource';
 
 interface EditorPaneProps {

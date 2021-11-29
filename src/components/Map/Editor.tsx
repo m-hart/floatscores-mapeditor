@@ -1,8 +1,11 @@
-import mapboxgl from 'mapbox-gl';
+import {
+  isNull
+} from 'lodash';
 import React from 'react';
 import {
-  SourceManager
-} from '../../structures/manager';
+  Source,
+  featureToSource,
+} from '../../structures/source';
 import {
   EditorPane
 } from '../EditorPane/EditorPane';
@@ -14,42 +17,45 @@ import Map, {
 interface EditorProps extends Pick<MapProps, 'token'> {}
 
 interface EditorState {
-  ids: Record<string, boolean>;
+  sources: Record<string, Source>;
 }
 
 /**
  * Map class for handling drawing events.
  */
 export default class Editor extends React.PureComponent<EditorProps, EditorState> {
-  private manager: SourceManager;
+
+  private index: number;
 
   constructor(props: EditorProps) {
     super(props);
-    this.manager = new SourceManager();
-
     this.state = {
-      ids: {}
+      sources: {},
     }
+
+    this.index = 0;
   }
 
   private onDraw = (event: DrawEvent) => {
-    const entries = event.features.map(f => {
+    const entries = Object.fromEntries(event.features.map(f => {
       const id = `${f.id}`
-      this.manager.addSource(id, f)
 
-      return [id, true]
-    });
+      // Tasty mutation - probably should find a better way to do this...
+      this.index += 1;
+
+      return [id, featureToSource(id, `New Layer ${this.index}` ,f)];
+    }).filter(f => f !== null));
 
     this.setState({
-      ids: {
-        ...this.state.ids,
-        ...Object.fromEntries(entries)
+      sources: {
+        ...this.state.sources,
+        ...entries,
       },
     });
   }
 
   render() {
-    const sources = this.manager.getSources();
+    const sources = this.state.sources;
 
     return (
       <div className="editor-container">
@@ -61,7 +67,7 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
         </div>
         <div className="editor-pane-container">
           <EditorPane
-            sources={sources}
+            sources={Object.entries(sources)}
           />
         </div>
       </div>
