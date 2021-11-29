@@ -20,7 +20,7 @@ export default class PointProperty extends React.PureComponent<PointPropertyProp
     } = this.props;
 
     return (
-      <div>
+      <>
         <ControlledProperty
           property={lng}
           onUpdate={this.onLngChange}
@@ -29,7 +29,7 @@ export default class PointProperty extends React.PureComponent<PointPropertyProp
           property={lat}
           onUpdate={this.onLatChange}
         />
-      </div>
+      </>
     )
   }
 }

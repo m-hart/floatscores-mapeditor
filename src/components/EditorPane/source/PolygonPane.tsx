@@ -1,5 +1,6 @@
 import React from 'react';
 import { PolygonSource } from '../../../structures/source';
+import ControlledProperty from './properties/ControlledProperty';
 import PointProperty from './properties/PointProperty';
 
 
@@ -29,19 +30,39 @@ export default class PolygonPane extends React.PureComponent<PolygonPaneProps> {
     );
   }
 
+  private onNameChange = (name: string) => this.props.onSourceChange(
+    this.props.source.id,
+    {
+      ...this.props.source,
+      name,
+    }
+  )
+
   render() {
     const {
       source: {
         polygon,
+        name,
       }
     } = this.props;
 
     // Curry the index
-    const points = polygon.map((p, i) => <PointProperty point={p} onEdit={this.onCoordinateChange(i)}/>)
+    const points = polygon.map((p, i) => <div key={i}><PointProperty point={p} onEdit={this.onCoordinateChange(i)}/></div>)
 
     return (
       <div>
-        {points}
+        <label>
+          Layer Name:
+          <ControlledProperty
+            onUpdate={this.onNameChange}
+            property={name}
+          />
+        </label>
+        <br />
+        <label>
+          Coordinates:
+          {points}
+        </label>
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PointSource } from '../../../structures/source';
+import ControlledProperty from './properties/ControlledProperty';
 import PointProperty from './properties/PointProperty';
 
 
@@ -29,18 +30,39 @@ export default class PointPane extends React.PureComponent<PointPaneProps> {
     );
   }
 
+  private onNameChange = (name: string) => this.props.onSourceChange(
+    this.props.source.id,
+    {
+      ...this.props.source,
+      name,
+    }
+  )
+
   render() {
     const {
       source: {
         point,
+        name,
       },
     } = this.props;
 
     return (
       <div>
-        <PointProperty
-          point={point} onEdit={this.onCoordinateChange}
-        />
+        <label>
+          Layer Name:
+          <ControlledProperty
+            onUpdate={this.onNameChange}
+            property={name}
+          />
+        </label>
+        <br />
+        <label>
+          Coordinates:
+          <PointProperty
+            point={point}
+            onEdit={this.onCoordinateChange}
+          />
+        </label>
       </div>
     )
   }

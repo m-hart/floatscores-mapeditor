@@ -1,3 +1,8 @@
 .source-element {
-  list-style: none
+  list-style: none;
+  cursor: pointer;
+}
+
+.source-element-content {
+  cursor: auto;
 }

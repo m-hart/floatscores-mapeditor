@@ -19,6 +19,7 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
 
     const s = sources.map(([id, source]) => (
       <EditorSource
+        key={id}
         id={id}
         source={source}
         onSourceChange={onSourceChange}

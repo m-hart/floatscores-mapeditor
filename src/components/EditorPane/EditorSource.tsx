@@ -57,7 +57,7 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
         contentContainerTagName="li"
         trigger={source.name}
         transitionTime={100}
-        contentOuterClassName="source-element"
+        contentOuterClassName="source-element-content"
       >
         <hr />
         {this.getSourceContent()}

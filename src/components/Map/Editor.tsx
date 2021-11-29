@@ -1,6 +1,3 @@
-import {
-  isNull
-} from 'lodash';
 import React from 'react';
 import {
   Source,
@@ -13,6 +10,7 @@ import Map, {
   DrawEvent,
   MapProps
 } from './Map';
+import Toolbar from './Toolbar';
 
 interface EditorProps extends Pick<MapProps, 'token'> {}
 
@@ -74,6 +72,7 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
           />
         </div>
         <div className="editor-pane-container">
+          <Toolbar sources={sources} />
           <EditorPane
             sources={Object.entries(sources)}
             onSourceChange={this.onSourceChange}
