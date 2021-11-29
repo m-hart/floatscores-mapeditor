@@ -39,7 +39,9 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
       ...this.state.sources,
       [id]: source
     }
-  })
+  });
+
+  private onSourceLoad = (sources: Record<string, Source>) => this.setState({ sources });
 
   private onDraw = (event: DrawEvent) => {
     const entries = Object.fromEntries(event.features.map(f => {
@@ -72,7 +74,10 @@ export default class Editor extends React.PureComponent<EditorProps, EditorState
           />
         </div>
         <div className="editor-pane-container">
-          <Toolbar sources={sources} />
+          <Toolbar
+            onSourceLoad={this.onSourceLoad}
+            sources={sources}
+          />
           <EditorPane
             sources={Object.entries(sources)}
             onSourceChange={this.onSourceChange}

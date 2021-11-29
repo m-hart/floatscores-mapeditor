@@ -4,8 +4,8 @@ import {
   Source
 } from '../../structures/source';
 import {
-  isPointSource,
-  isPolygonSource,
+  sourceIsPointSource,
+  sourceIsPolygonSource,
 } from '../../structures/typeguards';
 import './pane.css';
 import PointPane from './source/PointPane';
@@ -23,7 +23,7 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       source
     } = this.props;
 
-    if (isPointSource(source)) {
+    if (sourceIsPointSource(source)) {
       // TODO
       return (
         <PointPane
@@ -33,7 +33,7 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       );
     }
 
-    if (isPolygonSource(source)) {
+    if (sourceIsPolygonSource(source)) {
       return (
         <PolygonPane
           source={source}

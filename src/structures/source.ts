@@ -1,7 +1,12 @@
 import {
   Feature
 } from 'geojson';
-import { isPointSource, isPolygonSource } from './typeguards';
+import {
+  isPointSource,
+  isPolygonSource,
+  sourceIsPointSource,
+  sourceIsPolygonSource
+} from './typeguards';
 
 export interface Source {
   type: string;
@@ -56,7 +61,7 @@ export interface PointSource extends Source {
  * @returns
  */
 export function sourceToFeature(source: Source): Feature | null {
-  if (isPolygonSource(source)) {
+  if (sourceIsPolygonSource(source)) {
     return {
       type: 'Feature',
       properties: {},
@@ -65,7 +70,7 @@ export function sourceToFeature(source: Source): Feature | null {
     }
   }
 
-  if (isPointSource(source)) {
+  if (sourceIsPointSource(source)) {
     return {
       type: 'Feature',
       properties: {
@@ -77,4 +82,29 @@ export function sourceToFeature(source: Source): Feature | null {
   }
 
   return null;
+}
+
+/**
+ * Validates JSON loaded from file.
+ * @param json
+ * @returns
+ */
+export function validateSourceMap(json: any): json is Record<string, Source> {
+  try {
+    const invalid = Object.entries(json).find(([id, source]) => {
+      console.log(id, source, isPolygonSource(source), isPointSource(source));
+
+      return id !== (source as Source).id || (
+      !isPolygonSource(source)
+      && !isPointSource(source)
+      )
+    });
+
+    // Return false if we found an invalid object
+    return !invalid;
+  } catch (error) {
+    console.error(error);
+  }
+
+  return false;
 }
