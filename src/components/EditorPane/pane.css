@@ -3,6 +3,12 @@
   cursor: pointer;
 }
 
+.source-element-selected {
+  list-style: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .source-element-content {
   cursor: auto;
 }

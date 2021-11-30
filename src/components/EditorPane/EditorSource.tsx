@@ -14,6 +14,7 @@ import PolygonPane from './source/PolygonPane';
 interface EditorSourceProps {
   id: string;
   source: Source;
+  selected?: boolean;
 }
 
 export class EditorSource extends React.PureComponent<EditorSourceProps> {
@@ -45,16 +46,17 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
   render() {
     const {
       source,
+      selected,
     } = this.props;
 
+    const classname = selected ? 'source-element-selected' : 'source-element';
     return (
       <Collapsible
-        className="source-element"
-        openedClassName="source-element"
+        className={classname}
+        openedClassName={classname}
         contentContainerTagName="li"
         trigger={source.name}
         transitionTime={100}
-        contentOuterClassName="source-element-content"
       >
         <hr />
         {this.getSourceContent()}

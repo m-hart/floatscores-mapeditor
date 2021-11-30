@@ -29,6 +29,8 @@ export interface MapProps {
   token: string;
   onDraw: (event: DrawEvent) => any;
   onDelete: (event: DrawEvent) => any;
+  onSelect: (event: DrawEvent) => any;
+  onChange: (event: DrawEvent) => any;
   sources: Record<string, Source>;
 }
 
@@ -94,6 +96,8 @@ class Map extends React.PureComponent<MapProps> {
     // Add drawing binds
     this.map.on('draw.create', this.props.onDraw);
     this.map.on('draw.delete', this.props.onDelete);
+    this.map.on('draw.selectionchange', this.props.onSelect);
+    this.map.on('draw.update', this.props.onChange);
   }
 
   componentDidUpdate({ sources: prevSources }: MapProps) {

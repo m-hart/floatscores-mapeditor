@@ -5,7 +5,8 @@ import {
 import { EditorSource } from './EditorSource';
 
 interface EditorPaneProps {
-  sources: [string, Source][]
+  sources: [string, Source][];
+  selectedId?: string;
 }
 
 export class EditorPane extends React.PureComponent<EditorPaneProps> {
@@ -13,6 +14,7 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
   render() {
     const {
       sources,
+      selectedId
     } = this.props;
 
     const s = sources.map(([id, source]) => (
@@ -20,6 +22,7 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
         key={id}
         id={id}
         source={source}
+        selected={selectedId === id}
       />
     ));
 

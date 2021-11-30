@@ -30,6 +30,10 @@ class Editor extends React.PureComponent<EditorProps> {
     this.index = 0;
   }
 
+  private getIdsFromDrawEvent(event: DrawEvent): string[] {
+    return event.features.map(f => `${f.id}`);
+  }
+
 
   private onDraw = (event: DrawEvent) => {
     const entries = event.features.map<[string, Source | null]>(f => {
@@ -38,23 +42,28 @@ class Editor extends React.PureComponent<EditorProps> {
       // Tasty mutation - probably should find a better way to do this...
       this.index += 1;
 
-      return [id, featureToSource(id, `New Layer ${this.index}` ,f)];
+      return [id, featureToSource(id, `New Source ${this.index}` ,f)];
     }).filter<[string, Source]>((f: [string, Source | null]): f is [string, Source] => f[1] !== null);
-
-    console.log(entries);
 
     this.props.addSources(entries);
   }
 
   private onDelete = (event: DrawEvent) => {
-    const ids = event.features.map(f => `${f.id}`);
+    const ids = this.getIdsFromDrawEvent(event);
 
     this.props.deleteSource(ids);
+  }
+
+  private onSelect = (event: DrawEvent) => {
+    const ids = this.getIdsFromDrawEvent(event);
+    console.log(ids);
+    this.props.selectSource(ids[0]);
   }
 
   render() {
     const {
       sources,
+      selectedId,
     } = this.props;
 
     return (
@@ -64,12 +73,15 @@ class Editor extends React.PureComponent<EditorProps> {
             {...this.props}
             onDraw={this.onDraw}
             onDelete={this.onDelete}
+            onSelect={this.onSelect}
+            onChange={this.onDraw}
           />
         </div>
         <div className="editor-pane-container">
           <Toolbar />
           <EditorPane
             sources={Object.entries(sources)}
+            selectedId={selectedId}
           />
         </div>
       </div>

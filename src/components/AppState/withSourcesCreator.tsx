@@ -19,22 +19,12 @@ type SourcesCreatorContextProps<TProps> = SourcesCreatorContextOwnProps & Withou
  */
 export default function withSourcesCreator<TProps extends SourcesCreatorContextInjectProps>(Wrapped: React.ComponentType<TProps>) {
   return class SourcesCreator extends React.PureComponent<SourcesCreatorContextProps<TProps>, any> {
-    private renderWrapped = ({
-      sources,
-      updateSource,
-      deleteSource,
-      addSources,
-      loadSources,
-    }: SourcesContext) => {
+    private renderWrapped = (context: SourcesContext) => {
 
       return (
         <Wrapped
           {...this.props as TProps}
-          updateSource={updateSource}
-          deleteSource={deleteSource}
-          addSources={addSources}
-          loadSources={loadSources}
-          sources={sources}
+          {...context}
         />
       );
     }

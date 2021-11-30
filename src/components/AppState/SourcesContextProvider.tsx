@@ -7,6 +7,8 @@ export interface SourcesContext {
   updateSource: (id: string, source: Source) => void;
   deleteSource: (id: string | string[]) => void;
   loadSources: (sources: Record<string, Source>) => void;
+  selectSource: (id?: string) => void;
+  selectedId?: string;
 }
 
 export const SourcesContext = React.createContext<SourcesContext>({
@@ -15,11 +17,12 @@ export const SourcesContext = React.createContext<SourcesContext>({
   deleteSource: () => {},
   addSources: () => {},
   loadSources: () => {},
+  selectSource: () => {},
 });
 
 interface SourcesContextProviderProps {}
 
-interface SourcesContextProviderState extends Omit<SourcesContext, 'updateSource' | 'deleteSource' | 'addSources' | 'loadSources'> {
+interface SourcesContextProviderState extends Pick<SourcesContext, 'sources' | 'selectedId'> {
 
 }
 
@@ -69,6 +72,8 @@ export default class SourceContextProvider extends React.PureComponent<SourcesCo
     })
   }
 
+  private selectSource = (id?: string) => this.setState({ selectedId: id })
+
   private get sourcesContext(): SourcesContext {
     return {
       ...this.state,
@@ -76,11 +81,11 @@ export default class SourceContextProvider extends React.PureComponent<SourcesCo
       deleteSource: this.deleteSource,
       addSources: this.addSources,
       loadSources: this.loadSources,
+      selectSource: this.selectSource,
     }
   }
 
   render() {
-    console.log(this.sourcesContext);
     return (
       <SourcesContext.Provider value={this.sourcesContext}>
         {this.props.children}
