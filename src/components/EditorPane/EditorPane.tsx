@@ -6,7 +6,6 @@ import { EditorSource } from './EditorSource';
 
 interface EditorPaneProps {
   sources: [string, Source][]
-  onSourceChange: (id: string, newSource: Source) => void;
 }
 
 export class EditorPane extends React.PureComponent<EditorPaneProps> {
@@ -14,7 +13,6 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
   render() {
     const {
       sources,
-      onSourceChange,
     } = this.props;
 
     const s = sources.map(([id, source]) => (
@@ -22,7 +20,6 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
         key={id}
         id={id}
         source={source}
-        onSourceChange={onSourceChange}
       />
     ));
 

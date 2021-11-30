@@ -17,6 +17,7 @@ import {
   SimpleSelectMode,
 } from 'mapbox-gl-draw-circle';
 import { Source, sourceToFeature } from '../../structures/source';
+import withSources from '../AppState/withSources';
 
 export interface DrawEvent {
   type: 'draw.create';
@@ -34,7 +35,7 @@ export interface MapProps {
 /**
  * Base Map Class, handles loading and drawing a map from API token.
  */
-export default class Map extends React.PureComponent<MapProps> {
+class Map extends React.PureComponent<MapProps> {
   private map?: mapboxgl.Map;
   private drawingInstance: MapboxDraw;
 
@@ -110,3 +111,5 @@ export default class Map extends React.PureComponent<MapProps> {
     )
   }
 }
+
+export default withSources(Map);

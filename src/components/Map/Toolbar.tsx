@@ -1,11 +1,10 @@
 import React from 'react';
 import { Source, validateSourceMap } from '../../structures/source';
 import { saveAs } from 'file-saver';
+import withSources from '../AppState/withSources';
+import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
 
-interface ToolbarProps {
-  sources: Record<string, Source>;
-  onSourceLoad: (sources: Record<string, Source>) => void;
-}
+interface ToolbarProps extends SourcesCreatorContextInjectProps {}
 
 interface ToolbarState {
   validLoadData: boolean | undefined;
@@ -15,7 +14,7 @@ interface ToolbarState {
 /**
  * Toolbar class for loading and saving files.
  */
-export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
+class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
 
   constructor(props: ToolbarProps) {
     super(props);
@@ -35,8 +34,10 @@ export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarSt
 
   private load = (e) => {
     const {
-      onSourceLoad,
+      loadSources,
     } = this.props;
+
+    console.log(this.props);
 
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
@@ -48,7 +49,7 @@ export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarSt
       const valid = validateSourceMap(json);
 
       if (valid) {
-        onSourceLoad(json);
+        loadSources(json);
       }
 
       this.setState({
@@ -79,3 +80,5 @@ export default class Toolbar extends React.PureComponent<ToolbarProps, ToolbarSt
     );
   }
 }
+
+export default withSourcesCreator(Toolbar);

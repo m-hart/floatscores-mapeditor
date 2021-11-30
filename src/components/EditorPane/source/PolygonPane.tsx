@@ -1,36 +1,36 @@
 import React from 'react';
 import { PolygonSource } from '../../../structures/source';
+import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../../AppState/withSourcesCreator';
 import ControlledProperty from './properties/ControlledProperty';
 import PointProperty from './properties/PointProperty';
 
 
-interface PolygonPaneProps {
+interface PolygonPaneProps extends SourcesCreatorContextInjectProps {
   source: PolygonSource;
-  onSourceChange: (id: string, newSource: PolygonSource) => void;
 }
 
 /**
  * Class for handling all attached properties of a polygon source.
  */
-export default class PolygonPane extends React.PureComponent<PolygonPaneProps> {
+class PolygonPane extends React.PureComponent<PolygonPaneProps> {
 
   private onCoordinateChange = (index: number) => (point: [number, number]) => {
     const {
       source,
-      onSourceChange
+      updateSource
     } = this.props;
 
-    onSourceChange(
+    updateSource(
       source.id,
       {
         ...source,
         // Replace point in polygon
         polygon: source.polygon.map((p, i) => index === i ? point : p)
-      }
+      } as PolygonSource,
     );
   }
 
-  private onNameChange = (name: string) => this.props.onSourceChange(
+  private onNameChange = (name: string) => this.props.updateSource(
     this.props.source.id,
     {
       ...this.props.source,
@@ -67,3 +67,5 @@ export default class PolygonPane extends React.PureComponent<PolygonPaneProps> {
     )
   }
 }
+
+export default withSourcesCreator(PolygonPane);

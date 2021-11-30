@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Editor from './components/Map/Editor';
+import SourceContextProvider from './components/AppState/SourcesContextProvider';
 
 function App() {
   const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -15,7 +16,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {editor}
+        <SourceContextProvider>
+          {editor}
+        </SourceContextProvider>
       </header>
     </div>
   );

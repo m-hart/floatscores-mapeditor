@@ -14,7 +14,6 @@ import PolygonPane from './source/PolygonPane';
 interface EditorSourceProps {
   id: string;
   source: Source;
-  onSourceChange: (id: string, source: Source) => void;
 }
 
 export class EditorSource extends React.PureComponent<EditorSourceProps> {
@@ -28,7 +27,6 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       return (
         <PointPane
           source={source}
-          onSourceChange={this.props.onSourceChange}
         />
       );
     }
@@ -37,7 +35,6 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       return (
         <PolygonPane
           source={source}
-          onSourceChange={this.props.onSourceChange}
         />
       );
     }
