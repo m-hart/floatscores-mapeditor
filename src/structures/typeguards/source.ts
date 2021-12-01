@@ -2,6 +2,7 @@ import {
   Source,
   PointSource,
   PolygonSource,
+  CircleSource,
 } from '../source';
 
 /**
@@ -20,6 +21,10 @@ export function sourceIsPointSource(source: Source): source is PointSource {
  */
 export function sourceIsPolygonSource(source: Source): source is PolygonSource {
   return (source as PolygonSource).type === 'polygon';
+}
+
+export function sourceIsCircleSource(source: Source): source is CircleSource {
+  return (source as CircleSource).type === 'circle';
 }
 
 /**
@@ -54,6 +59,18 @@ export function isPointSource(source: any): source is PointSource {
   return isSource(source)
     && source.type === 'point'
     && (source as PointSource).point
-    && typeof (source as PointSource).radius === 'number'
     && typeof (source as PointSource).point[0] === 'number';
+}
+
+/**
+ * Typeguard for PointSource for any object
+ * @param source
+ * @returns
+ */
+ export function isCircleSource(source: any): source is CircleSource {
+  return isSource(source)
+    && source.type === 'point'
+    && (source as CircleSource).center
+    && typeof (source as CircleSource).radius === 'number'
+    && typeof (source as CircleSource).center[0] === 'number';
 }

@@ -56,7 +56,6 @@ class Editor extends React.PureComponent<EditorProps> {
 
   private onSelect = (event: DrawEvent) => {
     const ids = this.getIdsFromDrawEvent(event);
-    console.log(ids);
     this.props.selectSource(ids[0]);
   }
 

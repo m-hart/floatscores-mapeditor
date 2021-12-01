@@ -18,6 +18,7 @@ import {
 } from 'mapbox-gl-draw-circle';
 import { Source, sourceToFeature } from '../../structures/source';
 import withSources from '../AppState/withSources';
+import Controls from './controls/Controls';
 
 export interface DrawEvent {
   type: 'draw.create';
@@ -45,6 +46,7 @@ class Map extends React.PureComponent<MapProps> {
     point: true,
     polygon: true,
     trash: true,
+    circle: true,
   }
 
   constructor(props: MapProps) {
@@ -52,15 +54,12 @@ class Map extends React.PureComponent<MapProps> {
 
     this.drawingInstance = new MapboxDraw({
       displayControlsDefault: false,
-      controls: Map.CONTROLS,
+      // controls: Map.CONTROLS,
       userProperties: true,
       modes: {
         ...MapboxDraw.modes,
         /** TODO: Circle */
-        // DRAW_CIRCLE: CircleMode,
-        // DragCircleMode,
-        // DirectMode,
-        // SimpleSelectMode,
+        drag_circle  : DragCircleMode,
       },
 
     });
@@ -88,6 +87,8 @@ class Map extends React.PureComponent<MapProps> {
    */
   private memoizedMapInstance = memoize(this.initialiseMapInstance);
 
+  private setMode = (mode: any) => this.drawingInstance.changeMode(mode);
+
   componentDidMount() {
     // Initialise map instance after `map` div is loaded.
     this.map = this.memoizedMapInstance(this.props.token);
@@ -102,16 +103,22 @@ class Map extends React.PureComponent<MapProps> {
 
   componentDidUpdate({ sources: prevSources }: MapProps) {
     if (prevSources !== this.props.sources) {
-      this.drawingInstance.set({
+      const data: any = {
         type: 'FeatureCollection',
         features: Object.values(this.props.sources).map(sourceToFeature).filter<Feature>((f: Feature | null): f is Feature => f !== null),
-      });
+      };
+
+      console.log(data);
+      this.drawingInstance.set(data);
     }
   }
 
   render() {
     return (
-      <div id="map" className="map"/>
+      <>
+        <Controls onControlChange={this.setMode} />
+        <div id="map" className="map"/>
+      </>
     )
   }
 }

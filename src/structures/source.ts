@@ -1,9 +1,11 @@
 import {
   Feature
 } from 'geojson';
+import circle from '@turf/circle';
 import {
   isPointSource,
   isPolygonSource,
+  sourceIsCircleSource,
   sourceIsPointSource,
   sourceIsPolygonSource
 } from './typeguards';
@@ -22,14 +24,22 @@ export interface PolygonSource extends Source {
 export interface PointSource extends Source {
   type: 'point';
   point: [number, number];
-  radius: number;
 }
+
+export interface CircleSource extends Source {
+  type: 'circle';
+  center: [number, number];
+  radius: number;
+
+  // polygon: [number, number];
+}
+
 
 /**
  * Converts a single feature to a source
  * @param geojson
  */
- export function featureToSource(id: string, name: string, geojson: Feature): PolygonSource | PointSource | null {
+ export function featureToSource(id: string, name: string, geojson: Feature): PolygonSource | PointSource | CircleSource | null {
   switch(geojson.geometry.type) {
     case 'Point':
       return {
@@ -37,9 +47,20 @@ export interface PointSource extends Source {
         name,
         type: 'point',
         point: geojson.geometry.coordinates as [number, number],
-        radius: geojson.properties?.radius || 0,
       }
     case 'Polygon':
+      if (geojson.properties?.isCircle) {
+        return {
+          id,
+          name,
+          type: 'circle',
+          // Properties defined by mapbox-draw-circle library
+          // NOTE: lat lng is reversed compared to everything else
+          center: geojson.properties.center as [number, number],
+          radius: geojson.properties.radiusInKm * 1000,
+        }
+      }
+
       return {
         id,
         name,
@@ -61,11 +82,24 @@ export interface PointSource extends Source {
  * @returns
  */
 export function sourceToFeature(source: Source): Feature | null {
+  if (sourceIsCircleSource(source)) {
+    return {
+      type: 'Feature',
+      id: source.id,
+      properties: {
+        center: source.center,
+        radiusInKm: source.radius / 1000,
+        isCircle: true,
+      },
+      geometry: circle(source.center, source.radius / 1000).geometry
+    }
+  }
+
   if (sourceIsPolygonSource(source)) {
     return {
       type: 'Feature',
-      properties: {},
       id: source.id,
+      properties: {},
       geometry: { type: 'Polygon', coordinates: [source.polygon] }
     }
   }
@@ -73,10 +107,8 @@ export function sourceToFeature(source: Source): Feature | null {
   if (sourceIsPointSource(source)) {
     return {
       type: 'Feature',
-      properties: {
-        radius: source.radius,
-      },
       id: source.id,
+      properties: {},
       geometry: { type: 'Point', coordinates: source.point }
     }
   }
