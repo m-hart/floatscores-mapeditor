@@ -57,23 +57,22 @@ export default class CustomValueProperty extends React.PureComponent<CustomValue
     return (
       <div>
         <hr />
-        KEY
         <ControlledProperty
           onUpdate={this.onKeyUpdate}
           property={key}
+          label="Key"
         />
-        <br />
-        VAL
         <ControlledProperty
           onUpdate={this.onValueUpdate}
           property={value}
+          label="Value"
         />
-        <br />
         <button
           onClick={this.onRemove}
         >
           Remove Property
         </button>
+        <hr />
       </div>
     )
   }

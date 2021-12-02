@@ -51,18 +51,12 @@ class PolygonPane extends React.PureComponent<PolygonPaneProps> {
 
     return (
       <div>
-        <label>
-          Layer Name:
-          <ControlledProperty
-            onUpdate={this.onNameChange}
-            property={name}
-          />
-        </label>
-        <br />
-        <label>
-          Coordinates:
-          {points}
-        </label>
+        <ControlledProperty
+          onUpdate={this.onNameChange}
+          property={name}
+          label="Polygon Name"
+        />
+        {points}
       </div>
     )
   }

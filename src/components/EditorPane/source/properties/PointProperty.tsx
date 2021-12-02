@@ -24,10 +24,12 @@ export default class PointProperty extends React.PureComponent<PointPropertyProp
         <ControlledProperty
           property={lng}
           onUpdate={this.onLngChange}
+          label="Longitude"
         />
         <ControlledProperty
           property={lat}
           onUpdate={this.onLatChange}
+          label="Latitude"
         />
       </>
     )

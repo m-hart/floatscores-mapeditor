@@ -68,28 +68,20 @@ class CirclePane extends React.PureComponent<CirclePaneProps> {
 
     return (
       <div>
-        <label>
-          Layer Name:
-          <ControlledProperty
-            onUpdate={this.onNameChange}
-            property={name}
-          />
-        </label>
-        <br />
-        <label>
-          Center:
-          <PointProperty
-            point={center}
-            onEdit={this.onCenterChange}
-          />
-        </label>
-        <label>
-          Radius:
-          <ControlledProperty
-            onUpdate={this.onRadiusChange}
-            property={radius}
-          />
-        </label>
+        <ControlledProperty
+          onUpdate={this.onNameChange}
+          property={name}
+          label="Circle Name"
+        />
+        <PointProperty
+          point={center}
+          onEdit={this.onCenterChange}
+        />
+        <ControlledProperty
+          onUpdate={this.onRadiusChange}
+          property={radius}
+          label="Radius (m)"
+        />
       </div>
     )
   }

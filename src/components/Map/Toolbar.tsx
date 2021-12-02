@@ -1,7 +1,7 @@
 import React from 'react';
 import { Source, validateSourceMap } from '../../structures/source';
 import { saveAs } from 'file-saver';
-import withSources from '../AppState/withSources';
+import './editor.css';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
 
 interface ToolbarProps extends SourcesCreatorContextInjectProps {}
@@ -66,7 +66,7 @@ class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
     } = this.state;
 
     return(
-      <div>
+      <div className="toolbar">
         <input
           type="file"
           name="Load"

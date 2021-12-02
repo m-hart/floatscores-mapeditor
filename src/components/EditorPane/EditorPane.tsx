@@ -3,6 +3,7 @@ import {
   Source
 } from '../../structures/source';
 import { EditorSource } from './EditorSource';
+import './pane.css';
 
 interface EditorPaneProps {
   sources: [string, Source][];
@@ -27,7 +28,7 @@ export class EditorPane extends React.PureComponent<EditorPaneProps> {
     ));
 
     return (
-      <ul>
+      <ul className="list-container">
         {s}
       </ul>
     )

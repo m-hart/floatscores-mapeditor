@@ -48,21 +48,15 @@ class PointPane extends React.PureComponent<PointPaneProps> {
 
     return (
       <div>
-        <label>
-          Layer Name:
-          <ControlledProperty
-            onUpdate={this.onNameChange}
-            property={name}
-          />
-        </label>
-        <br />
-        <label>
-          Coordinates:
-          <PointProperty
-            point={point}
-            onEdit={this.onCoordinateChange}
-          />
-        </label>
+        <ControlledProperty
+          onUpdate={this.onNameChange}
+          property={name}
+          label="Point Name"
+        />
+        <PointProperty
+          point={point}
+          onEdit={this.onCoordinateChange}
+        />
       </div>
     )
   }

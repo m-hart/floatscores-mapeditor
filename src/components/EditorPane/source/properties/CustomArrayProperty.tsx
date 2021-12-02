@@ -41,9 +41,24 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
 
     onEdit({
       ...property,
-      value: [...property.value, '']
+      value: [...property.value, `value-${property.value.length}`]
     });
   }
+
+  private removeEntry = (e: React.MouseEvent) => {
+    const {
+      property,
+      onEdit,
+    } = this.props;
+
+    e.preventDefault();
+
+    onEdit({
+      ...property,
+      value: property.value.slice(0, property.value.length - 1),
+    });
+  }
+
 
   private onValueUpdate = (index: number) => (value: string | number) => {
     const {
@@ -73,6 +88,7 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
         key={`${uuid}-${val}-${index}`}
         property={val}
         onUpdate={this.onValueUpdate(index)}
+        label={`${index}`}
       />
     ));
   }
@@ -87,13 +103,11 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
     return (
       <div>
         <hr />
-        KEY
         <ControlledProperty
           onUpdate={this.onKeyUpdate}
           property={key}
+          label="Key"
         />
-        <br />
-        VALUES
         {this.valueProperties()}
         <br />
         <button
@@ -101,12 +115,18 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
         >
           Add Entry
         </button>
+        <button
+          onClick={this.removeEntry}
+        >
+          Remove Entry
+        </button>
         <br />
         <button
           onClick={this.onRemove}
         >
           Remove Property
         </button>
+        <hr />
       </div>
     )
   }

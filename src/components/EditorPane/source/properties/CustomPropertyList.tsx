@@ -27,16 +27,16 @@ class CustomPropertyList extends React.PureComponent<CustomPropertyListProps> {
       case 'array':
         return {
           type: 'array',
-          key: '',
-          value: [],
+          key: 'custom-key',
+          value: ['value-0'],
           uuid: this.generateUuid(),
         }
       case 'file':
       case 'value':
         return {
           type: 'value',
-          key: '',
-          value: '',
+          key: 'custom-key',
+          value: 'val',
           uuid: this.generateUuid(),
         }
     }

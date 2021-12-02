@@ -78,10 +78,13 @@ class Editor extends React.PureComponent<EditorProps> {
         </div>
         <div className="editor-pane-container">
           <Toolbar />
-          <EditorPane
-            sources={Object.entries(sources)}
-            selectedId={selectedId}
-          />
+          <div className="editor-pane-content-container">
+            <div className="editor-content-padding"/>
+            <EditorPane
+              sources={Object.entries(sources)}
+              selectedId={selectedId}
+            />
+          </div>
         </div>
       </div>
     )

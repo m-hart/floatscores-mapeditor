@@ -1,14 +1,21 @@
 .source-element {
   list-style: none;
   cursor: pointer;
+  padding: 0 1.5rem;
+}
+
+.list-container {
+  padding: 0;
 }
 
 .source-element-selected {
   list-style: none;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.2);
+  padding: 0 1.5rem;
 }
 
 .source-element-content {
   cursor: auto;
+  /* padding: 0; */
 }
