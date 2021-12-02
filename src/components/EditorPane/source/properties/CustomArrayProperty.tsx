@@ -85,7 +85,7 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
 
     return value.map((val, index) => (
       <ControlledProperty
-        key={`${uuid}-${val}-${index}`}
+        key={`${uuid}-${index}`}
         property={val}
         onUpdate={this.onValueUpdate(index)}
         label={`${index}`}
