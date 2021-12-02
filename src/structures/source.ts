@@ -14,12 +14,30 @@ import {
  * Custom source property, e.g attached file etc.
  * Each property has a unique ID attached
  */
-export interface SourceCustomProperty {
+export interface SourceCustomBaseProperty {
+  type: string;
   key: string;
-  value: string | number;
   /** Unique uuid for identifying custom property irrespective of key */
   uuid: string;
 }
+
+export interface SourceCustomValueProperty extends SourceCustomBaseProperty {
+  type: 'value';
+  value: string | number;
+}
+
+export interface SourceCustomFileProperty extends SourceCustomBaseProperty {
+  type: 'file'
+  value: string;
+}
+
+export interface SourceCustomArrayProperty extends SourceCustomBaseProperty {
+  type: 'array';
+  value: (string | number)[]
+}
+
+export type SourceCustomProperty = SourceCustomArrayProperty | SourceCustomFileProperty | SourceCustomValueProperty;
+
 export interface Source {
   type: string;
   id: string;

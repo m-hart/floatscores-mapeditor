@@ -1,18 +1,24 @@
 import React from 'react';
 import {
-  SourceCustomProperty } from '../../../../structures/source';
+  SourceCustomValueProperty,
+} from '../../../../structures/source';
 import ControlledProperty from './ControlledProperty';
+import { CustomPropertyProps } from './CustomPropertyList';
 
-interface CustomPropertyProps {
-  onEdit: (property: SourceCustomProperty) => void;
-  property: SourceCustomProperty;
-  onDelete: (uuid: string) => void;
-}
-export default class CustomProperty extends React.PureComponent<CustomPropertyProps> {
+interface CustomValuePropertyProps extends CustomPropertyProps<SourceCustomValueProperty> {}
+
+export default class CustomValueProperty extends React.PureComponent<CustomValuePropertyProps> {
   private onRemove = (e: React.MouseEvent) => {
+    const {
+      property: {
+        uuid,
+      },
+      onDelete,
+    } = this.props;
+
     e.preventDefault();
 
-    this.props.onDelete(this.props.property.uuid);
+    onDelete(uuid);
   }
 
   private onKeyUpdate = (key: string) => {
