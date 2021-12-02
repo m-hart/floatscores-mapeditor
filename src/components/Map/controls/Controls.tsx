@@ -7,34 +7,42 @@ export type ControlMode = 'drag_circle' | 'draw_polygon' | 'simple_select' | 'dr
 
 interface ControlsProps {
   onControlChange: (control: ControlMode) => void;
+  onLayerChange: () => void;
 }
 
 export default class Controls extends React.PureComponent<ControlsProps> {
-
-  private onActivate = (id: ControlMode) => {
-    this.props.onControlChange(id)
-  }
-
   render() {
+    const {
+      onControlChange,
+      onLayerChange,
+    } = this.props;
+
     return (
-      <div className="controls-container">
-        <ControlButton
-          id="simple_select"
-          onActivate={this.onActivate}
-        />
-        <ControlButton
-          id="draw_polygon"
-          onActivate={this.onActivate}
-        />
-        <ControlButton
-          id="draw_point"
-          onActivate={this.onActivate}
-        />
-        <ControlButton
-          id="drag_circle"
-          onActivate={this.onActivate}
-        />
-      </div>
+      <>
+        <div className="controls-container">
+          <ControlButton
+            id="simple_select"
+            onActivate={onControlChange}
+          />
+          <ControlButton
+            id="draw_polygon"
+            onActivate={onControlChange}
+          />
+          <ControlButton
+            id="draw_point"
+            onActivate={onControlChange}
+          />
+          <ControlButton
+            id="drag_circle"
+            onActivate={onControlChange}
+          />
+          <button
+            onClick={onLayerChange}
+          >
+            toggle_satellite
+          </button>
+        </div>
+      </>
     )
 
   }

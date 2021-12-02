@@ -47,7 +47,15 @@ class PolygonPane extends React.PureComponent<PolygonPaneProps> {
     } = this.props;
 
     // Curry the index
-    const points = polygon.map((p, i) => <div key={i}><PointProperty point={p} onEdit={this.onCoordinateChange(i)}/></div>)
+    const points = polygon.map((p, i) => (
+      <div key={i}>
+        <PointProperty
+          point={p}
+          onEdit={this.onCoordinateChange(i)}
+          index={i}
+        />
+      </div>
+    ))
 
     return (
       <div>

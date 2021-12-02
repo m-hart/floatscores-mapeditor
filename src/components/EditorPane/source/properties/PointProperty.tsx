@@ -3,6 +3,7 @@ import ControlledProperty from './ControlledProperty';
 
 interface PointPropertyProps {
   point: [number,  number];
+  index?: number;
   onEdit: (newPoint: [number, number]) => void;
 }
 
@@ -17,19 +18,22 @@ export default class PointProperty extends React.PureComponent<PointPropertyProp
   render() {
     const {
       point: [lng, lat],
+      index,
     } = this.props;
+
+    const ind = index !== undefined ? index : '';
 
     return (
       <>
         <ControlledProperty
           property={lng}
           onUpdate={this.onLngChange}
-          label="Longitude"
+          label={`Longitude ${ind}`}
         />
         <ControlledProperty
           property={lat}
           onUpdate={this.onLatChange}
-          label="Latitude"
+          label={`Latitude ${ind}`}
         />
       </>
     )

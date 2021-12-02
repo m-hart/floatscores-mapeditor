@@ -42,6 +42,11 @@ class Map extends React.PureComponent<MapProps> {
   private map?: mapboxgl.Map;
   private drawingInstance: MapboxDraw;
 
+  private currentStyle = Map.STREET_STYLE;
+
+  static SATELLITE_STYLE: Readonly<string> = 'mapbox://styles/mapbox/satellite-v9';
+  static STREET_STYLE: Readonly<string> = 'mapbox://styles/mapbox/streets-v11';
+
   private static CONTROLS: any = {
     point: true,
     polygon: true,
@@ -76,7 +81,7 @@ class Map extends React.PureComponent<MapProps> {
 
     return new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: this.currentStyle,
       center: [145.707, -41.8],
       zoom: 7.5
     })
@@ -88,6 +93,11 @@ class Map extends React.PureComponent<MapProps> {
   private memoizedMapInstance = memoize(this.initialiseMapInstance);
 
   private setMode = (mode: any) => this.drawingInstance.changeMode(mode);
+
+  private styleToggle = () => {
+    this.currentStyle = this.currentStyle === Map.STREET_STYLE ? Map.SATELLITE_STYLE : Map.STREET_STYLE
+    this.map?.setStyle(this.currentStyle);
+  }
 
   componentDidMount() {
     // Initialise map instance after `map` div is loaded.
@@ -116,7 +126,10 @@ class Map extends React.PureComponent<MapProps> {
   render() {
     return (
       <>
-        <Controls onControlChange={this.setMode} />
+        <Controls
+          onControlChange={this.setMode}
+          onLayerChange={this.styleToggle}
+        />
         <div id="map" className="map"/>
       </>
     )
