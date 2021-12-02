@@ -12,6 +12,8 @@ import './pane.css';
 import CirclePane from './source/CirclePane';
 import PointPane from './source/PointPane';
 import PolygonPane from './source/PolygonPane';
+import CustomProperty from './source/properties/CustomProperty';
+import CustomPropertyList from './source/properties/CustomPropertyList';
 
 interface EditorSourceProps {
   id: string;
@@ -70,6 +72,9 @@ export class EditorSource extends React.PureComponent<EditorSourceProps> {
       >
         <hr />
         {this.getSourceContent()}
+        <CustomPropertyList
+          source={source}
+        />
         <hr />
       </Collapsible>
     )

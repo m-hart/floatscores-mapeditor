@@ -10,10 +10,22 @@ import {
   sourceIsPolygonSource
 } from './typeguards';
 
+/**
+ * Custom source property, e.g attached file etc.
+ * Each property has a unique ID attached
+ */
+export interface SourceCustomProperty {
+  key: string;
+  value: string | number;
+  /** Unique uuid for identifying custom property irrespective of key */
+  uuid: string;
+}
 export interface Source {
   type: string;
   id: string;
   name: string;
+  /** Custom properties uses the UUID property of the `SourceCustomProperty` as the key */
+  customProperties: Record<string, SourceCustomProperty>;
 }
 
 export interface PolygonSource extends Source {
@@ -47,6 +59,7 @@ export interface CircleSource extends Source {
         name,
         type: 'point',
         point: geojson.geometry.coordinates as [number, number],
+        customProperties: {},
       }
     case 'Polygon':
       if (geojson.properties?.isCircle) {
@@ -58,6 +71,7 @@ export interface CircleSource extends Source {
           // NOTE: lat lng is reversed compared to everything else
           center: geojson.properties.center as [number, number],
           radius: geojson.properties.radiusInKm * 1000,
+          customProperties: {},
         }
       }
 
@@ -70,6 +84,7 @@ export interface CircleSource extends Source {
          * Important: Polygon can be triple nested.
          */
         polygon: geojson.geometry.coordinates[0] as unknown as [number, number][],
+        customProperties: {},
       }
   }
   console.warn(`Unsupported geojson feature type: ${geojson.geometry.type}`)
