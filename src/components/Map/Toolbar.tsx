@@ -37,8 +37,6 @@ class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
       loadSources,
     } = this.props;
 
-    console.log(this.props);
-
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
 

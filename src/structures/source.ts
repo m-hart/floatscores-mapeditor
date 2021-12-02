@@ -3,6 +3,7 @@ import {
 } from 'geojson';
 import circle from '@turf/circle';
 import {
+  isCircleSource,
   isPointSource,
   isPolygonSource,
   sourceIsCircleSource,
@@ -160,6 +161,7 @@ export function validateSourceMap(json: any): json is Record<string, Source> {
       id !== (source as Source).id || (
         !isPolygonSource(source)
         && !isPointSource(source)
+        && !isCircleSource(source)
       )
     ));
 

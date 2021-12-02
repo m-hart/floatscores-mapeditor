@@ -69,7 +69,7 @@ export function isPointSource(source: any): source is PointSource {
  */
  export function isCircleSource(source: any): source is CircleSource {
   return isSource(source)
-    && source.type === 'point'
+    && source.type === 'circle'
     && (source as CircleSource).center
     && typeof (source as CircleSource).radius === 'number'
     && typeof (source as CircleSource).center[0] === 'number';
