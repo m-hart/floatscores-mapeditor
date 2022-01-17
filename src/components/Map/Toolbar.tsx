@@ -3,6 +3,8 @@ import { Source, validateSourceMap } from '../../structures/source';
 import { saveAs } from 'file-saver';
 import './editor.css';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
+import Button from '../button/Button';
+import FileButton from '../button/FileButton';
 
 interface ToolbarProps extends SourcesCreatorContextInjectProps {}
 
@@ -65,15 +67,15 @@ class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
 
     return(
       <div className="toolbar">
-        <input
-          type="file"
-          name="Load"
-          onChange={this.load}
+        <FileButton
+          label="load"
+          onValueUpdate={this.load}
           value={value}
         />
-        <button onClick={this.save}>
-          <label>Save</label>
-        </button>
+        <Button
+          onClick={this.save}
+          label="Save"
+        />
       </div>
     );
   }

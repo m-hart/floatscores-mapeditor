@@ -1,5 +1,5 @@
 import {
-  Feature
+  Feature, Polygon
 } from 'geojson';
 import circle from '@turf/circle';
 import {
@@ -61,10 +61,7 @@ export interface CircleSource extends Source {
   type: 'circle';
   center: [number, number];
   radius: number;
-
-  // polygon: [number, number];
 }
-
 
 /**
  * Converts a single feature to a source
@@ -108,6 +105,23 @@ export interface CircleSource extends Source {
   }
   console.warn(`Unsupported geojson feature type: ${geojson.geometry.type}`)
   return null;
+}
+
+/**
+ * Funky hack to translate circle
+ * @param source
+ * @param feature
+ * @returns
+ */
+export function translateCircle(source: CircleSource, feature: Feature<Polygon>): CircleSource {
+  const geom = circle(source.center, source.radius / 1000).geometry;
+  const dx = feature.geometry.coordinates[0][0][0] - geom.coordinates[0][0][0];
+  const dy = feature.geometry.coordinates[0][0][1] - geom.coordinates[0][0][1];
+
+  return {
+    ...source,
+    center: [source.center[0] + dx, source.center[1] + dy],
+  }
 }
 
 /**

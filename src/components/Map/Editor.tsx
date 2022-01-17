@@ -1,7 +1,10 @@
+import { Feature, Polygon } from 'geojson';
 import React from 'react';
 import {
   Source,
   featureToSource,
+  CircleSource,
+  translateCircle,
 } from '../../structures/source';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
 import {
@@ -36,11 +39,19 @@ class Editor extends React.PureComponent<EditorProps> {
 
 
   private onDraw = (event: DrawEvent) => {
+    const {
+      sources,
+    } = this.props;
+
     const entries = event.features.map<[string, Source | null]>(f => {
       const id = `${f.id}`
 
       // Tasty mutation - probably should find a better way to do this...
       this.index += 1;
+
+      if (f.geometry.type === 'Polygon' && f.properties?.isCircle && sources[id] && sources[id].type === 'circle') {
+        return [id, translateCircle(sources[id] as CircleSource, f as Feature<Polygon>)];
+      }
 
       return [id, featureToSource(id, `New Source ${this.index}` ,f)];
     }).filter<[string, Source]>((f: [string, Source | null]): f is [string, Source] => f[1] !== null);

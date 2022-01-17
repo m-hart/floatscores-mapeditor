@@ -2,6 +2,7 @@ import React from 'react';
 import {
   SourceCustomValueProperty,
 } from '../../../../structures/source';
+import Button from '../../../button/Button';
 import ControlledProperty from './ControlledProperty';
 import { CustomPropertyProps } from './CustomPropertyList';
 
@@ -67,11 +68,10 @@ export default class CustomValueProperty extends React.PureComponent<CustomValue
           property={value}
           label="Value"
         />
-        <button
+        <Button
           onClick={this.onRemove}
-        >
-          Remove Property
-        </button>
+          label="Remove Property"
+        />
         <hr />
       </div>
     )

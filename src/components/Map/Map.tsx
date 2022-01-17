@@ -118,7 +118,6 @@ class Map extends React.PureComponent<MapProps> {
         features: Object.values(this.props.sources).map(sourceToFeature).filter<Feature>((f: Feature | null): f is Feature => f !== null),
       };
 
-      console.log(data);
       this.drawingInstance.set(data);
     }
   }

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Source, SourceCustomBaseProperty, SourceCustomProperty } from '../../../../structures/source';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../../../AppState/withSourcesCreator';
+import Button from '../../../button/Button';
 import CustomArrayProperty from './CustomArrayProperty';
+import CustomFileProperty from './CustomFileProperty';
 import CustomValueProperty from './CustomValueProperty';
+import './property.css';
 
 interface CustomPropertyListProps extends SourcesCreatorContextInjectProps {
   source: Source;
@@ -32,6 +35,12 @@ class CustomPropertyList extends React.PureComponent<CustomPropertyListProps> {
           uuid: this.generateUuid(),
         }
       case 'file':
+        return {
+          type: 'file',
+          key: 'custom-key',
+          value: '',
+          uuid: this.generateUuid(),
+        }
       case 'value':
         return {
           type: 'value',
@@ -99,6 +108,15 @@ class CustomPropertyList extends React.PureComponent<CustomPropertyListProps> {
             onDelete={this.onDelete}
           />
         )
+      case 'file':
+        return (
+          <CustomFileProperty
+            key={uuid}
+            property={prop}
+            onEdit={this.onEdit}
+            onDelete={this.onDelete}
+          />
+        )
     }
   }
 
@@ -114,22 +132,19 @@ class CustomPropertyList extends React.PureComponent<CustomPropertyListProps> {
     return (
       <>
         {custom}
-        <div>
-          <button
+        <div className="property-button-container">
+          <Button
+            label="Add Custom Property"
             onClick={this.onCreate('value')}
-          >
-            Add Custom Property
-          </button>
-          <button
+          />
+          <Button
+            label="Add Custom Array"
             onClick={this.onCreate('array')}
-          >
-            Add Custom Array
-          </button>
-          <button
+          />
+          <Button
+            label="Add Custom File"
             onClick={this.onCreate('file')}
-          >
-            Add Custom File
-          </button>
+          />
         </div>
       </>
     )

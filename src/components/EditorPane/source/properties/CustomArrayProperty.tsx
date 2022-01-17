@@ -1,5 +1,6 @@
 import React from 'react';
 import { SourceCustomArrayProperty } from '../../../../structures/source';
+import Button from '../../../button/Button';
 import ControlledProperty from './ControlledProperty';
 import { CustomPropertyProps } from './CustomPropertyList';
 
@@ -110,22 +111,19 @@ export default class CustomArrayProperty extends React.PureComponent<CustomArray
         />
         {this.valueProperties()}
         <br />
-        <button
+        <Button
           onClick={this.addEntry}
-        >
-          Add Entry
-        </button>
-        <button
+          label="Add Entry"
+        />
+        <Button
           onClick={this.removeEntry}
-        >
-          Remove Entry
-        </button>
+          label="Remove Entry"
+        />
         <br />
-        <button
+        <Button
           onClick={this.onRemove}
-        >
-          Remove Property
-        </button>
+          label="Remove Property"
+        />
         <hr />
       </div>
     )
