@@ -1,4 +1,4 @@
-# floatscores-mapeditor
+# floatscores-mapeditor 0.1.0
 
 Webapp Map Editor for FloatScores
 
