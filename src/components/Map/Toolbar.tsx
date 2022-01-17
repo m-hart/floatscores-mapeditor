@@ -1,5 +1,5 @@
 import React from 'react';
-import { Source, validateSourceMap } from '../../structures/source';
+import { Source, SourceCustomProperty, validateSourceMap } from '../../structures/source';
 import { saveAs } from 'file-saver';
 import './editor.css';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
@@ -12,6 +12,42 @@ interface ToolbarState {
   validLoadData: boolean | undefined;
   value: string;
 }
+
+interface SaveData {
+  sources: (Omit<Source, 'customProperties'> & { customProperties: SourceCustomProperty[] })[]
+}
+
+/**
+ * Converts records to arrays for saving
+ * @param sources
+ * @returns
+ */
+function unmapSources(sources: Record<string, Source>): SaveData {
+  return {
+      sources: Object.values(sources).map((source) => ({
+      ...source,
+      customProperties: Object.values(source.customProperties),
+    })),
+  };
+}
+
+/**
+ * Converts arrays to records for use in application state.
+ * @param data
+ * @returns
+ */
+function mapSources(data: SaveData): Record<string, Source> {
+  return Object.fromEntries(Object.values(data.sources).map((source) => (
+    [
+      source.id,
+      {
+        ...source,
+        customProperties: Object.fromEntries(source.customProperties.map(prop => [prop.uuid, prop])),
+      },
+    ]
+  )));
+}
+
 
 /**
  * Toolbar class for loading and saving files.
@@ -28,7 +64,7 @@ class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
   }
 
   private save = () => {
-    const data = JSON.stringify(this.props.sources);
+    const data = JSON.stringify(unmapSources(this.props.sources));
     const blob = new Blob([data], { type: "text/plain;charset=utf-8"});
 
     saveAs(blob, 'data.json');
@@ -46,7 +82,7 @@ class Toolbar extends React.PureComponent<ToolbarProps, ToolbarState> {
       const data = fileEvent.target?.result;
       const json = (JSON.parse(data as string));
 
-      const valid = validateSourceMap(json);
+      const valid = validateSourceMap(mapSources(json));
 
       if (valid) {
         loadSources(json);
