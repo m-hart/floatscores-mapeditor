@@ -1,0 +1,4 @@
+- Save List
+- Fix circle draggability
+- Add file property
+- Control z (undo redo)

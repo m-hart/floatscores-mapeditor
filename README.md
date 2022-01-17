@@ -1,6 +1,10 @@
-# floatscores-mapeditor
+# floatscores-mapeditor 0.1.0
 
 Webapp Map Editor for FloatScores
+
+## Mapbox API Key
+
+Set `REACT_APP_MAPBOX_ACCESS_TOKEN` in `.env.local` to your public key and run `yarn start`.
 
 ## Getting Started with Create React App
 

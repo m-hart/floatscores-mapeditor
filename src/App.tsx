@@ -1,23 +1,24 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Editor from './components/Map/Editor';
+import SourceContextProvider from './components/AppState/SourcesContextProvider';
 
 function App() {
+  const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+
+  const editor = token ? (
+    <Editor
+      token={token}
+    />
+  ) : <div>Set REACT_APP_MAPBOX_ACCESS_TOKEN in .env.local</div>
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <SourceContextProvider>
+          {editor}
+        </SourceContextProvider>
       </header>
     </div>
   );
