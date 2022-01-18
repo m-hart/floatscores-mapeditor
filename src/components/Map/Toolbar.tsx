@@ -1,5 +1,5 @@
 import React from 'react';
-import { Source, SourceCustomProperty, validateSourceMap } from '../../structures/source';
+import { PolygonSource, Source, SourceCustomProperty, validateSourceMap } from '../../structures/source';
 import { saveAs } from 'file-saver';
 import './editor.css';
 import withSourcesCreator, { SourcesCreatorContextInjectProps } from '../AppState/withSourcesCreator';
@@ -13,8 +13,20 @@ interface ToolbarState {
   value: string;
 }
 
+interface SaveSource extends Omit<Source, 'customProperties'> {
+  customProperties: SourceCustomProperty[]
+}
+
 interface SaveData {
-  sources: (Omit<Source, 'customProperties'> & { customProperties: SourceCustomProperty[] })[]
+  sources: SaveSource[]
+}
+
+interface SavePolygonSource extends SaveSource {
+  type: 'polygon';
+  polygon: {
+    lon: number;
+    lat: number;
+  }[]
 }
 
 /**
@@ -24,7 +36,11 @@ interface SaveData {
  */
 function unmapSources(sources: Record<string, Source>): SaveData {
   return {
-      sources: Object.values(sources).map((source) => ({
+      sources: Object.values(sources).map((source) => (source.type === 'polygon' ? {
+        ...source,
+        polygon: (source as PolygonSource).polygon.map(([lon, lat]) => ({ lon, lat })),
+        customProperties: Object.values(source.customProperties),
+      } : {
       ...source,
       customProperties: Object.values(source.customProperties),
     })),
@@ -40,7 +56,11 @@ function mapSources(data: SaveData): Record<string, Source> {
   return Object.fromEntries(Object.values(data.sources).map((source) => (
     [
       source.id,
-      {
+      source.type === 'polygon' ? {
+        ...source,
+        poylgon: (source as SavePolygonSource).polygon.map(({ lon, lat }) => [lon, lat]),
+        customProperties: Object.fromEntries(source.customProperties.map(prop => [prop.uuid, prop])),
+      } : {
         ...source,
         customProperties: Object.fromEntries(source.customProperties.map(prop => [prop.uuid, prop])),
       },
